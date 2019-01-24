@@ -21,14 +21,14 @@ reset: clean.deployment app
 	say "app refresh complete"
 
 reset.safe: env creds
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
 	-kubectl delete deployment api-deployment
 	-kubectl run api-deployment --image=$(DOCKERREPO)/api --replicas=12 --port=8080 --labels=app=api 
 	say "app refresh complete"		
 
 main:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
 build: env main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
@@ -40,6 +40,8 @@ build.dockerhub: main
 build.generic: main
 	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/whackapod-api
 	docker push $(DOCKERREPO)/whackapod-api
+
+build.rpi: build.generic
 
 deploy: env creds deployment service
 
@@ -53,6 +55,8 @@ deploy.generic:
 	kubectl run api-deployment --image=$(DOCKERREPO)/whackapod-api --replicas=12 --port=8080 --labels=app=api 
 	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
+deploy.rpi: deploy.generic
+
 test: 
 	cd 	"$(BASEDIR)/../containers" && go test
 
@@ -63,6 +67,7 @@ service:
 	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 clean: env creds clean.deployment clean.service 
+clean.rpi: clean.deployment clean.service 
 clean.generic: clean.deployment clean.service 
 
 clean.minikube: clean.deployment clean.service 

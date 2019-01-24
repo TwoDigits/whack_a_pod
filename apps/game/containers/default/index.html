@@ -112,7 +112,7 @@ limitations under the License.
             <p><strong>See if you can knock down enough of them to 
                 disrupt the service.</strong>
             </p>
-            <button id="deploy-start">Click to deploy</button>
+            <button id="deploy-start" class="button">Click to deploy</button>
             <br /><br />
             <code>
                 kubectl create -f whack-a-pod-deployment.yaml
@@ -129,7 +129,7 @@ limitations under the License.
                 <li>Caused <span id="total-knockdowns">0</span></li>
                 <li>For total of <span id="total-score">0</span></li>
             </ul>    
-            <button id="restart">Restart</button>
+            <button id="restart" onClick="location.reload()" class="button">Restart</button>
         </div>
     </div>        
 </body>

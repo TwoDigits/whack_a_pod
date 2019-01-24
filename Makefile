@@ -42,6 +42,12 @@ deploy.minikube.dockerhub: creds.minikube
 	@printf -- "add the following line to your /etc/hosts file:\n\n"
 	@printf -- "$(shell minikube ip) minikube.wap\n\n"
 
+deploy.rpi: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.rpi
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.rpi
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.rpi
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.rpi
+
 deploy.generic: 
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.generic
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.generic
@@ -53,6 +59,12 @@ clean: env creds
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean	
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean
+
+clean.rpi: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.rpi
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean.rpi
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.rpi
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.rpi
 
 clean.generic: 
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.generic
@@ -81,6 +93,11 @@ build.dockerhub:
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build.dockerhub
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build.dockerhub
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build.dockerhub
+
+build.rpi: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build.rpi
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build.rpi
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build.rpi
 
 build.generic: 
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build.generic

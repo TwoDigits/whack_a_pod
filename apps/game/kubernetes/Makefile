@@ -38,6 +38,8 @@ build.generic:
 	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/whackapod-game
 	docker push $(DOCKERREPO)/whackapod-game
 
+build.rpi: build.generic
+
 deploy: env creds deployment service
 
 deploy.minikube: deployment service
@@ -50,6 +52,8 @@ deploy.generic:
 	kubectl run game-deployment --image=$(DOCKERREPO)/whackapod-game --replicas=4 --port=8080 --labels=app=game 
 	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=game"
 
+deploy.rpi: deploy.generic
+
 deployment:
 	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
 
@@ -59,6 +63,8 @@ service:
 clean: env creds clean.deployment clean.service 
 
 clean.generic: clean.deployment clean.service
+
+clean.rpi: clean.generic
 
 clean.minikube: clean.deployment clean.service 
 

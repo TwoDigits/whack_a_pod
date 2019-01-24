@@ -6,7 +6,7 @@ app: clean build serve
 
 
 main:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
 build: main
 	docker build -t api "$(BASEDIR)/../containers/."
