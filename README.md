@@ -157,6 +157,24 @@ For example, if your username is `username` and your repository name is `wap`, y
 1. Run `make clean.minikube`
 1. Run `minikube stop`
 
+### Running on RaspberryPi Kubernetes
+
+This method is for usage on Kubernates running on Raspberry Pi. 
+* It will push built images to repo `DOCKERREPO` defined in Makefile.properties
+* It's agnostic of any loadbalancer in front of ingress so you can use `NodePort` type for ingress service
+* It works with RBAC model - proper serviceaccount and role bindings are created
+* It will deploy all objects in current namespace
+
+1. Open a terminal in root of whack_a_pod location.
+1. Build application with `make build.rpi` **OR** skip building by setting `DOCKERREPO` to **index.docker.io/twodigits** and use prebuilt images availabe on dockerhub
+1. Run `make deploy.rpi`
+1. Define name `whackapod.twodigits.local` in your `/etc/hosts` pointing to IP address of your load balancer in front of ingress controller or one of nodes IP (when using `NodePort`)
+1. Open your browser at [http://whackapod.twodigits.local/](http://whackapod.twodigits.local)
+
+### Clean RaspberryPi deployment
+1. Run `make clean.rpi`
+
+
 ### Running on any Kubernetes (generic)
 
 This method is for generic usage and can be run on any Kubernetes installation. There are few differences:
